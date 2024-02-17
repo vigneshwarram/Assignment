@@ -11,5 +11,8 @@ export const Screens = {
   black: "#000",
   headingtextColor: "#4A4A4A",
   pureWhite: "#ffffff",
-  red: "red",
+  dull:'#D3D3D3',
+  red: "#e93347",
+  lightGray:'#767577',
+  darkGrey:'#3e3e3e'
 };

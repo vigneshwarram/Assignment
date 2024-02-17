@@ -1,5 +1,4 @@
 import {
-    TransitionSpecs,
     HeaderStyleInterpolators,
   } from "@react-navigation/native-stack";
   

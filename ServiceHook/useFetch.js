@@ -38,6 +38,7 @@ const useFetch = () => {
     loading,
     error,
     fetch,
+    setData
   };
 };
 

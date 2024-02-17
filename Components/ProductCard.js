@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   View,
   FlatList,
@@ -8,8 +8,23 @@ import {
   TouchableOpacity,
 } from "react-native";
 import ProductStyles from "../Styles/ProductStyles";
+import Animated, {
+  useSharedValue,
+  useAnimatedStyle,
+  withRepeat,
+  withTiming,
+  withSequence,
+} from "react-native-reanimated";
+const ProductCard = ({ productData, addCart, addWishList }) => {
+  const rotation = useSharedValue(0);
+  const [selectedItem, setSelectedItem] = useState();
 
-const ProductCard = ({ productData, addCart }) => {
+  const animatedStyle = useAnimatedStyle(() => {
+    return {
+      transform: [{ rotateZ: `${rotation.value}deg` }],
+    };
+  });
+
   const renderProduct = ({ item }) => {
     const offerPercentage =
       (item?.compare_at_price_min / 100) * item?.price_min;
@@ -32,13 +47,19 @@ const ProductCard = ({ productData, addCart }) => {
               {correctOfferInString}
             </Text>
           </View>
-          <View style={ProductStyles.watchListIconStyle}>
-            <Image
-              style={ProductStyles.imageStyle}
-              resizeMode="contain"
-              source={require("../assets/heart.png")}
-            ></Image>
-          </View>
+          <TouchableOpacity onPress={() => addWishList(item)}>
+            <View style={ProductStyles.watchListIconStyle}>
+              <Image
+                style={ProductStyles.imageStyle}
+                resizeMode="contain"
+                source={
+                  item?.isWishList
+                    ? require("../assets/heartred.png")
+                    : require("../assets/heart.png")
+                }
+              ></Image>
+            </View>
+          </TouchableOpacity>
         </ImageBackground>
         <View style={ProductStyles.h100}>
           <View style={ProductStyles.h65}>
@@ -62,10 +83,34 @@ const ProductCard = ({ productData, addCart }) => {
             </Text>
           </View>
         </View>
-        <TouchableOpacity onPress={() => addCart(item)}>
-          <View style={ProductStyles.addCartContainer}>
-            <Text style={ProductStyles.addCartButtonname}>Add To Bag</Text>
-          </View>
+        <TouchableOpacity
+          onPress={() => {
+            rotation.value = withRepeat(withTiming(10), 6, true);
+            setSelectedItem(item);
+            addCart(item);
+          }}
+        >
+          <Animated.View
+            style={[
+              ProductStyles.addCartContainer,
+              selectedItem?.title === item?.title && animatedStyle,
+              {
+                backgroundColor:
+                  selectedItem?.title === item?.title ? "#000" : "transparent",
+              },
+            ]}
+          >
+            <Text
+              style={[
+                ProductStyles.addCartButtonname,
+                {
+                  color: selectedItem?.title === item?.title ? "#fff" : "#000",
+                },
+              ]}
+            >
+              Add To Bag
+            </Text>
+          </Animated.View>
         </TouchableOpacity>
       </View>
     );

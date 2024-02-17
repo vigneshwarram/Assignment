@@ -3,15 +3,36 @@ import { View, Switch, Image, Text } from "react-native";
 import il8n, { languageRestart } from "./../Utils/i18n";
 import CartContext from "../Context/CartContext";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import productStyle from '../Styles/ProductStyles'
+import { HeaderStyle } from "../Styles/HeaderStyle";
+import Animated, {
+    useSharedValue,
+    useAnimatedStyle,
+    withRepeat,
+    withTiming,
+    withSequence
+  } from 'react-native-reanimated';
+  import {Screens} from '../Styles/themes'
 
 const Header = ({ getProducts }) => {
+    const rotation = useSharedValue(0);
+
+    const animatedStyle = useAnimatedStyle(() => {
+      return {
+        transform: [{ rotateZ: `${rotation.value}deg` }],
+      };
+    });
   const cartData = useContext(CartContext);
   const [isEnabled, setIsEnabled] = useState(false);
   const toggleSwitch = async () => {
     setIsEnabled((previousState) => !previousState);
   };
-
+ useEffect(()=>{
+  rotation.value = withSequence(
+    withTiming(-10, { duration: 50 }),
+    withRepeat(withTiming(10, { duration: 100 }), 6, true),
+    withTiming(0, { duration: 50 })
+  );
+ },[cartData])
   useEffect(() => {
     changeLanguage();
   }, [isEnabled]);
@@ -32,104 +53,48 @@ const Header = ({ getProducts }) => {
     const lang = await AsyncStorage.getItem("setLanguage");
     console.log("lang", lang);
     if (isEnabled) {
-      await AsyncStorage.setItem("setLanguage", lang === "en" ? "ar" : "en");
-      il8n.changeLanguage(lang === "en" ? "ar" : "en");
+      await AsyncStorage.setItem("setLanguage", "ar");
+      il8n.changeLanguage("ar");
     } else {
-      await AsyncStorage.setItem("setLanguage", lang === "en" ? "ar" : "en");
-      il8n.changeLanguage(lang === "en" ? "ar" : "en");
+      await AsyncStorage.setItem("setLanguage", "en");
+      il8n.changeLanguage(lang === "en");
     }
     languageRestart();
     getProducts();
   };
 
   return (
-    <View
-      style={{
-        height: 80,
-        backgroundColor: "#fff",
-        justifyContent: "space-between",
-        alignItems: "center",
-        paddingHorizontal: 20,
-        flexDirection: "row",
-        marginTop: 20,
-        borderBottomWidth: 0.5,
-      }}
-    >
-      <View style={{ flexDirection: "row" }}>
-        <Text style={{ fontSize: 24, color: "#000", fontWeight: "bold" }}>
-          {"R E D T A G"}
-        </Text>
+    <View style={HeaderStyle.container}>
+      <View style={HeaderStyle.row}>
+        <Text style={HeaderStyle.title}>{"R E D T A G"}</Text>
       </View>
-      <View style={{ flexDirection: "row" }}>
-        <View
-          style={{
-            justifyContent: "center",
-            alignItems: "center",
-            flexDirection: "row",
-          }}
-        >
-          <Text style={{ fontSize: 12, color: "#000", fontWeight: "bold" }}>
-            {"ENG"}
-          </Text>
+      <View style={HeaderStyle.row}>
+        <View style={HeaderStyle.studiosCenter}>
+          <Text style={HeaderStyle.lanText}>{"ENG"}</Text>
           <Switch
-            trackColor={{ false: "#767577", true: "#81b0ff" }}
-            thumbColor={isEnabled ? "#f5dd4b" : "#f4f3f4"}
-            ios_backgroundColor="#3e3e3e"
+            trackColor={{ false: Screens.lightGray, true: Screens.black }}
+            thumbColor={isEnabled ?Screens.red :Screens.pureWhite}
+            ios_backgroundColor={Screens.darkGrey}
             onValueChange={toggleSwitch}
             value={isEnabled}
           />
-          <Text
-            style={{
-              fontSize: 12,
-              color: "#000",
-              fontWeight: "bold",
-              marginLeft: -2,
-            }}
-          >
-            {"AR"}
-          </Text>
+          <Text style={HeaderStyle.textContainer}>{"AR"}</Text>
         </View>
 
-        <View
-          style={{
-            justifyContent: "center",
-            alignItems: "center",
-            marginLeft: 20,
-            position: "relative",
-          }}
-        >
+        <Animated.View  style={[HeaderStyle.bagImage,animatedStyle]}>
           <Image
-            style={{ width: 30, height: 30 }}
+            style={HeaderStyle.imageContainer}
             resizeMode="contain"
             source={require("../assets/bag.png")}
           ></Image>
           {cartData && cartData?.length >= 1 && (
-            <View
-              style={{
-                justifyContent: "center",
-                alignItems: "center",
-                position: "absolute",
-                width: 20,
-                height: 20,
-                borderRadius: 20 / 2,
-                backgroundColor: "#e93347",
-                bottom: 2,
-                right: -5,
-              }}
-            >
-              <Text
-                style={{
-                  fontSize: 12,
-                  color: "#fff",
-                  fontWeight: "bold",
-                  marginLeft: -2,
-                }}
-              >
+            <View style={HeaderStyle.cardRounder}>
+              <Text style={HeaderStyle.cardText}>
                 {cartData?.length.toString()}
               </Text>
             </View>
           )}
-        </View>
+        </Animated.View >
       </View>
     </View>
   );

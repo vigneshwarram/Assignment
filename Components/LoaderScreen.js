@@ -2,14 +2,15 @@ import React from "react";
 import { View } from "react-native";
 import ProductStyles from "../Styles/ProductStyles";
 import SkeletonLoader from "expo-skeleton-loader";
+import { Screens } from "../Styles/themes";
 const LoaderScreen = () => {
   const AvatarLayout = ({ style }) => (
     <SkeletonLoader>
       <SkeletonLoader.Container
-        style={[{ flex: 1, flexDirection: "row" }, style]}
+        style={[ProductStyles.containerRows, style]}
       >
-        <SkeletonLoader.Container style={{ paddingVertical: 10 }}>
-          <SkeletonLoader.Item style={{ width: 300, height: 20 }} />
+        <SkeletonLoader.Container style={ProductStyles.pv10}>
+          <SkeletonLoader.Item style={ProductStyles.w300} />
         </SkeletonLoader.Container>
       </SkeletonLoader.Container>
     </SkeletonLoader>
@@ -18,19 +19,14 @@ const LoaderScreen = () => {
   const PostLayout = () => (
     <SkeletonLoader
       duration={1000}
-      boneColor={"#ffffff"}
-      highlightColor={"#f0f0f0"}
+      boneColor={Screens.pureWhite}
+      highlightColor={Screens.dull}
       style={{ marginVertical: 10 }}
     >
       <AvatarLayout style={{ marginBottom: 10 }} />
 
       <SkeletonLoader.Item
-        style={{
-          width: 350,
-          height: 150,
-          marginVertical: 10,
-          marginHorizontal: 30,
-        }}
+        style={ProductStyles.skeletonLoadderitem}
       />
     </SkeletonLoader>
   );

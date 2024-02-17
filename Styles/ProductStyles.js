@@ -4,6 +4,18 @@ const ProductStyles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
   },
+  containerRows:{
+    flex: 1, flexDirection: "row" 
+  },
+  w300:{
+    width: 300, height: 20
+  },
+  mV:{
+
+  },
+  pv10:{
+    paddingVertical: 10
+  },
   cardContainer: {
     flex: 1,
     marginHorizontal: 10,
@@ -122,6 +134,12 @@ const ProductStyles = StyleSheet.create({
   },
   mT30:{
     marginTop:30
+  },
+  skeletonLoadderitem:{
+    width: 350,
+          height: 150,
+          marginVertical: 10,
+          marginHorizontal: 30,
   }
 });
 export default ProductStyles;
