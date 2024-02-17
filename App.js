@@ -6,7 +6,7 @@ import {Apptheme} from '../Assignment/Styles/themes'
 import { SlidAnimation } from "./Animations/SlideAnimations";
 import { enableScreens } from "react-native-screens";
 import Products from './Screens/Products';
-import Header from './Components/Header'
+
 
 
 export default function App() {
@@ -36,11 +36,10 @@ export default function App() {
 
   return (
     <NavigationContainer theme={Apptheme}>
-    <Stack.Navigator screenOptions={{ headerShown: true }}>
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
         <Stack.Screen
           options={{
-            ...SlidAnimation,
-            header: () => <Header />
+            ...SlidAnimation
           }}
           name={"ProductStack"}
           component={ProductStack}

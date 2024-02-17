@@ -1,8 +1,8 @@
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
-import { NativeModules, Platform } from "react-native";
-import { AsyncStorage } from "react-native";
-import RNRestart from "react-native-restart";
+import { NativeModules, I18nManager } from "react-native";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {Restart} from 'fiction-expo-restart';
 export const AppLanguage = {
     ENGLISH : "ENG"
   }
@@ -14,8 +14,8 @@ export const LANGUAGE = {
   };
   export const languageRestart = async () => {
 	//changing language based on what was chosen
-	
-	       if (I18nManager.isRTL) {
+	const language = await AsyncStorage.getItem("setLanguage");
+	       if (language === 'en') {
                     await I18nManager.forceRTL(false);
                }
 	 else {
@@ -23,7 +23,7 @@ export const LANGUAGE = {
         	     await I18nManager.forceRTL(true);
                }
 	}
-	RNRestart.Restart();
+ Restart();
 };
 export const platformLanguage =
   NativeModules?.I18nManager?.localeIdentifier?.replace(/_/, "-");
@@ -54,11 +54,9 @@ i18n
     debug: true,
     resources: {
       [AppLanguage.ENGLISH]: {
-        translation: translationEN,
+        translation: 'en',
       },
-      [AppLanguage.PORTUGUESE]: {
-        translation: translationPT,
-      },
+   
     },
     interpolation: {
       escapeValue: false, // not needed for react as it escapes by default

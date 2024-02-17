@@ -1,162 +1,79 @@
 import React from "react";
-import { View, FlatList, Image, Text, ImageBackground } from "react-native";
+import {
+  View,
+  FlatList,
+  Image,
+  Text,
+  ImageBackground,
+  TouchableOpacity,
+} from "react-native";
 import ProductStyles from "../Styles/ProductStyles";
 
-const ProductCard = ({ productData }) => {
+const ProductCard = ({ productData, addCart }) => {
   const renderProduct = ({ item }) => {
     const offerPercentage =
       (item?.compare_at_price_min / 100) * item?.price_min;
     const correctOfferInString =
       Math.round(offerPercentage).toString() + "% OFF";
     return (
-      <View
-        style={{
-          flex: 1,
-          marginHorizontal: 10,
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
+      <View style={ProductStyles.cardContainer}>
         <ImageBackground
           source={{
             uri: item?.images["1"],
           }}
           resizeMode="cover"
-          style={{ width: "95%", aspectRatio: 0.7, height: 300 }}
+          style={ProductStyles.imageContainer}
         >
-          <View
-            style={{
-              position: "absolute",
-              bottom: 10,
-              right: 10,
-              width: 50,
-              height: 20,
-              backgroundColor: "#fde8e8",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <Text style={{ fontSize: 9, color: "#000", fontWeight: "bold" }}>
-              {item?.tags[0]}
-            </Text>
+          <View style={ProductStyles.cardTextPosition}>
+            <Text style={ProductStyles.cardTextStyle}>{item?.tags[0]}</Text>
           </View>
-          <View
-            style={{
-              position: "absolute",
-              bottom: 10,
-              left: 10,
-              width: 50,
-              height: 20,
-              backgroundColor: "#fde8e8",
-              justifyContent: "center",
-              alignItems: "center",
-              borderWidth: 0.5,
-              borderColor: "#e93347",
-              borderRadius: 5,
-            }}
-          >
-            <Text
-              style={{ fontSize: 12, color: "#e93347", fontWeight: "bold" }}
-            >
+          <View style={ProductStyles.cardOfferInnerContainer}>
+            <Text style={ProductStyles.cardOfferTextStyle}>
               {correctOfferInString}
             </Text>
           </View>
-          <View
-            style={{
-              position: "absolute",
-              top: 10,
-              right: 10,
-              width: 50,
-              height: 20,
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
+          <View style={ProductStyles.watchListIconStyle}>
             <Image
-              style={{ width: 24, height: 24 }}
+              style={ProductStyles.imageStyle}
               resizeMode="contain"
               source={require("../assets/heart.png")}
             ></Image>
           </View>
         </ImageBackground>
-        <View style={{ height: 100 }}>
-          <View style={{ height: 65 }}>
-            <Text style={{ color: "#000", fontWeight: "bold" }}>
-              {item.title}
-            </Text>
-            <View style={{ flexDirection: "row" }}>
-              <Text style={{ fontSize: 14, color: "#e93347" }}>
+        <View style={ProductStyles.h100}>
+          <View style={ProductStyles.h65}>
+            <Text style={ProductStyles.titleTextStyle}>{item.title}</Text>
+            <View style={ProductStyles.containerRow}>
+              <Text style={ProductStyles.containerCurrencyText}>
                 {item.currency + " " + item.price_min}{" "}
               </Text>
-              <Text
-                style={{
-                  fontSize: 14,
-                  textDecorationLine: "line-through",
-                  color: "#000",
-                  marginLeft: 10,
-                }}
-              >
+              <Text style={ProductStyles.currencyTextStyle}>
                 {item.currency + " " + item.compare_at_price_min}
               </Text>
             </View>
           </View>
-          <View
-            style={{
-              width: 150,
-              height: 25,
-              backgroundColor: "#000",
-              justifyContent: "center",
-              alignItems: "center",
-              borderRadius: 5,
-              flexDirection: "row",
-            }}
-          >
+          <View style={ProductStyles.containerPosition}>
             <Image
-              style={{ width: 10, height: 10, tintColor: "#ffd331" }}
+              style={ProductStyles.priceTag}
               source={require("../assets/price-tag.png")}
             ></Image>
-            <Text
-              style={{
-                fontSize: 9,
-                color: "#ffd331",
-                fontWeight: "bold",
-                marginLeft: 3,
-              }}
-            >
+            <Text style={ProductStyles.offerText}>
               {item["offer-message"]}{" "}
             </Text>
           </View>
         </View>
-        <View
-          style={{
-            width: 150,
-            height: 30,
-            borderWidth: 1,
-            borderColor: "gray",
-            justifyContent: "center",
-            alignItems: "center",
-            borderRadius: 20,
-            marginBottom: 30,
-          }}
-        >
-          <Text
-            style={{
-              fontSize: 12,
-              color: "#000",
-              fontWeight: "bold",
-              marginLeft: 3,
-            }}
-          >
-            Add To Bag
-          </Text>
-        </View>
+        <TouchableOpacity onPress={() => addCart(item)}>
+          <View style={ProductStyles.addCartContainer}>
+            <Text style={ProductStyles.addCartButtonname}>Add To Bag</Text>
+          </View>
+        </TouchableOpacity>
       </View>
     );
   };
 
   return (
     <View style={ProductStyles.container}>
-      <View style={{ marginTop: 30 }}>
+      <View style={ProductStyles.mT30}>
         <FlatList
           initialNumToRender={8}
           numColumns={2}
