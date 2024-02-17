@@ -14,7 +14,7 @@ const Products = () => {
     fetch: productFetch,
   } = useFetch();
   useEffect(() => {
-    console.log("productsLoading", productsLoading);
+    console.log("productsLoading", productData);
   }, [productsLoading]);
   useEffect(() => {
     productFetch(GET_PRODUCTS);
