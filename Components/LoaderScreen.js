@@ -21,10 +21,9 @@ const LoaderScreen = () => {
       duration={1000}
       boneColor={Screens.pureWhite}
       highlightColor={Screens.dull}
-      style={{ marginVertical: 10 }}
+      style={ProductStyles.mV}
     >
-      <AvatarLayout style={{ marginBottom: 10 }} />
-
+      <AvatarLayout style={ProductStyles.mB} />
       <SkeletonLoader.Item
         style={ProductStyles.skeletonLoadderitem}
       />

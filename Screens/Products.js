@@ -45,12 +45,11 @@ const Products = () => {
 
   useEffect(() => {
     getProducts();
-  }, []); // Dependency array includes language
+  }, []); 
 
   const getProducts = async () => {
     const storedLanguage = await AsyncStorage.getItem('setLanguage');
     if (storedLanguage === 'ar') {
-     
       productFetch(GET_PRODUCTS_AR);
     } else {
       productFetch(GET_PRODUCTS_EN);

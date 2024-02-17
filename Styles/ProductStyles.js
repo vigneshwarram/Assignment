@@ -11,7 +11,10 @@ const ProductStyles = StyleSheet.create({
     width: 300, height: 20
   },
   mV:{
-
+    marginVertical: 10
+  },
+  mB:{
+    marginBottom: 10
   },
   pv10:{
     paddingVertical: 10
